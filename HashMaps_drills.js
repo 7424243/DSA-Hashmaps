@@ -94,3 +94,74 @@ k:null     20  12 null 5      null 17
        19                  33
        10
 */
+
+/* ===== 4. Remove duplicates =====
+Implement a function to delete all duplicated characters in a string and keep only the first occurrence of each character. For example, if the input is string “google”, the result after deletion is “gole”. Test your program with a sentence as well such as "google all that you think can think of".
+*/
+function removeDuplicates(string) {
+    const newMap = new HashMap()
+    let newString = ''
+    for(let i = 0; i < string.length; i++) {
+        try {
+            newMap.get(string[i])
+        } catch (e) {
+            newMap.set(string[i], '')
+            newString = newString + string[i]
+        }
+    }
+    console.log(newString)
+    return newString
+}
+removeDuplicates('google all that you think can think of')//output: 'gole athyuinkcf'
+
+/* ===== 5. Any permutation a palindrome =====
+Write an algorithm to check whether any anagram of some string is a palindrome. Given some string, "acecarr", the algorithm should return true, because the letters in "acecarr" can be rearranged to the anagram "racecar", which itself is a palindrome. In contrast, given the word "north", the algorithm should return false, because there's no anagram for "north" that would be a palindrome.
+*/
+function palindrome(string) {
+    let newMap = new HashMap()
+    let str = string.toLowerCase()
+    for(let i = 0; i < str.length; i++) {
+        try {
+            newMap.delete(str[i])
+        } catch (e) {
+            newMap.set(str[i], '')
+        }
+    } 
+    // string will be a palindrome if 1 or 0 letters are unique
+    if(newMap.length <= 1) {
+        console.log(true)
+        return true
+    } else {
+        console.log(false)
+        return false
+    }
+}
+palindrome('acecarr')//output: true
+palindrome('north')//output: false
+
+/* ===== 6. Anagram grouping =====
+Write an algorithm to group a list of words into anagrams. For example, if the input was ['east', 'cars', 'acre', 'arcs', 'teas', 'eats', 'race'], the output should be: [['east', 'teas', 'eats'], ['cars', 'arcs'], ['acre', 'race']].
+*/
+function anagramGrouping(array) {
+    let newMap = new HashMap()
+    let results = []
+    array.forEach(word => {
+        //alphabetize each individual word
+        let sorted = word.split('').sort().join('')
+        try {
+            let index = newMap.get(sorted)
+            results[index].push(word)
+        } catch (e) {
+            newMap.set(sorted, results.length)
+            results.push([word])
+        }
+    })
+    console.log(results)
+    return results
+}
+anagramGrouping(['east', 'cars', 'acre', 'arcs', 'teas', 'eats', 'race'])//[ [ 'east', 'teas', 'eats' ], [ 'cars', 'arcs' ], [ 'acre', 'race' ] ]
+
+/* ===== 7. Separate Chaining =====
+Write another hash map implementation as above, but use separate chaining as the collision resolution mechanism.
+Test your hash map with the same values from the lotr hash map.
+*/
